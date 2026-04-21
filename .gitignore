@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+.env
+*.log
+
+# Java
+**/target/
+**/build/
+
+# Node (za kasnije)
+**/node_modules/
