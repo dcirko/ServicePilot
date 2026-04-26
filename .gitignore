@@ -1,16 +1,50 @@
+# ========================
+# Backend (Spring Boot)
+# ========================
+/backend/target/
+!/backend/.mvn/wrapper/maven-wrapper.jar
+
+# ========================
+# Frontend (Angular)
+# ========================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/
+/frontend/.cache/
+/frontend/coverage/
+
+# ========================
+# IntelliJ
+# ========================
 .idea/
-.vscode/
 *.iml
-*.ipr
 *.iws
+
+# ========================
+# OS
+# ========================
 .DS_Store
 Thumbs.db
-.env
+
+# ========================
+# Logs
+# ========================
 *.log
+logs/
 
-# Java
-**/target/
-**/build/
+# ========================
+# Env
+# ========================
+.env
+.env.*
+application-local.properties
+application-*.local.properties
 
-# Node (za kasnije)
-**/node_modules/
+# ========================
+# Misc
+# ========================
+/shelf/
+/workspace.xml
+/httpRequests/
+/dataSources/
+/dataSources.local.xml
