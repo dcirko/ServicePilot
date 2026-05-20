@@ -3,6 +3,8 @@ package hr.domagoj.servicepilot.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -31,10 +33,16 @@ public class User extends BaseEntity {
     @Column(length = 30)
     private String phone;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean active = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @Transient
+    public Set<Role> getRoles() {
+        return role == null ? Set.of() : Set.of(role);
+    }
 }

@@ -4,11 +4,9 @@ import hr.domagoj.servicepilot.entities.Role;
 import hr.domagoj.servicepilot.entities.User;
 import hr.domagoj.servicepilot.repos.RoleRepository;
 import hr.domagoj.servicepilot.repos.UserRepository;
-import org.jspecify.annotations.NonNull;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,15 +21,15 @@ public class UserSeeder implements ApplicationRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserSeeder(RoleRepository roleRepository, UserRepository userRepository) {
+    public UserSeeder(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
-    public void run(@NonNull ApplicationArguments args) {
+    public void run(ApplicationArguments args) {
         users().forEach(this::seedUser);
     }
 

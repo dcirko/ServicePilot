@@ -17,6 +17,7 @@ public class RoleSeeder implements ApplicationRunner {
     public static final String ADMIN = "ADMIN";
     public static final String SERVICE_ADVISOR = "SERVICE_ADVISOR";
     public static final String MECHANIC = "MECHANIC";
+    public static final String CUSTOMER = "CUSTOMER";
 
     private final RoleRepository roleRepository;
 
@@ -41,7 +42,8 @@ public class RoleSeeder implements ApplicationRunner {
         return List.of(
                 ADMIN,
                 SERVICE_ADVISOR,
-                MECHANIC
+                MECHANIC,
+                CUSTOMER
         );
     }
 }
