@@ -30,20 +30,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AuthResponse register(
-            @Valid @RequestBody RegisterRequest request,
-            HttpServletRequest httpRequest,
-            HttpServletResponse httpResponse
-    ) {
+    public AuthResponse register(@Valid @RequestBody RegisterRequest request, HttpServletRequest httpRequest,
+                                 HttpServletResponse httpResponse) {
         return authService.register(request, httpRequest, httpResponse);
     }
 
     @PostMapping("/login")
-    public AuthResponse login(
-            @Valid @RequestBody LoginRequest request,
-            HttpServletRequest httpRequest,
-            HttpServletResponse httpResponse
-    ) {
+    public AuthResponse login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest,
+                              HttpServletResponse httpResponse) {
         return authService.login(request, httpRequest, httpResponse);
     }
 

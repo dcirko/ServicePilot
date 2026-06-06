@@ -26,15 +26,7 @@ public class CustomUserPrincipal implements UserDetails {
     private final List<String> roles;
     private final List<GrantedAuthority> authorities;
 
-    private CustomUserPrincipal(
-            Long id,
-            String firstName,
-            String lastName,
-            String email,
-            String password,
-            boolean enabled,
-            List<String> roles
-    ) {
+    private CustomUserPrincipal(Long id, String firstName, String lastName, String email, String password, boolean enabled, List<String> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

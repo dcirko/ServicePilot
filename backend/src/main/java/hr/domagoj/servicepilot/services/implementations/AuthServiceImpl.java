@@ -4,6 +4,7 @@ import hr.domagoj.servicepilot.DTOs.AuthResponse;
 import hr.domagoj.servicepilot.DTOs.CurrentUserResponse;
 import hr.domagoj.servicepilot.DTOs.LoginRequest;
 import hr.domagoj.servicepilot.DTOs.RegisterRequest;
+import hr.domagoj.servicepilot.entities.Role;
 import hr.domagoj.servicepilot.entities.User;
 import hr.domagoj.servicepilot.exceptions.BadRequestException;
 import hr.domagoj.servicepilot.exceptions.ResourceNotFoundException;
@@ -54,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Email is already registered");
         }
 
-        var role = roleRepository.findByName(DEFAULT_REGISTER_ROLE)
+        Role role = roleRepository.findByName(DEFAULT_REGISTER_ROLE)
                 .orElseThrow(() -> new ResourceNotFoundException("Default role not found: " + DEFAULT_REGISTER_ROLE));
 
         User user = userRepository.save(User.builder()

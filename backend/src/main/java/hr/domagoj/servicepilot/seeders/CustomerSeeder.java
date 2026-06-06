@@ -1,7 +1,9 @@
 package hr.domagoj.servicepilot.seeders;
 
 import hr.domagoj.servicepilot.entities.Customer;
+import hr.domagoj.servicepilot.entities.User;
 import hr.domagoj.servicepilot.repos.CustomerRepository;
+import hr.domagoj.servicepilot.repos.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import org.springframework.boot.ApplicationArguments;
@@ -16,9 +18,11 @@ import java.util.List;
 public class CustomerSeeder implements ApplicationRunner {
 
     private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
-    public CustomerSeeder(CustomerRepository customerRepository) {
+    public CustomerSeeder(CustomerRepository customerRepository, UserRepository userRepository) {
         this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -28,11 +32,15 @@ public class CustomerSeeder implements ApplicationRunner {
     }
 
     private void seedCustomer(CustomerSeed seed) {
+        User user = userRepository.findByEmail(seed.userEmail())
+                .orElseThrow(() -> new IllegalStateException("User not found: " + seed.userEmail()));
+
         if (customerRepository.findByEmail(seed.email()).isPresent()) {
             return;
         }
 
         customerRepository.save(Customer.builder()
+                .user(user)
                 .firstName(seed.firstName())
                 .lastName(seed.lastName())
                 .email(seed.email())
@@ -45,6 +53,7 @@ public class CustomerSeeder implements ApplicationRunner {
     private List<CustomerSeed> customers() {
         return List.of(
                 new CustomerSeed(
+                        "ivan@gmail.com",
                         "Ivan",
                         "Horvat",
                         "ivan.horvat@example.com",
@@ -53,6 +62,7 @@ public class CustomerSeeder implements ApplicationRunner {
                         "Prefers morning appointments."
                 ),
                 new CustomerSeed(
+                        "ana@gmail.com",
                         "Ana",
                         "Kovač",
                         "ana.kovac@example.com",
@@ -61,6 +71,7 @@ public class CustomerSeeder implements ApplicationRunner {
                         "Customer owns two vehicles."
                 ),
                 new CustomerSeed(
+                        "petar@gmail.com",
                         "Petar",
                         "Marić",
                         "petar.maric@example.com",
@@ -72,6 +83,7 @@ public class CustomerSeeder implements ApplicationRunner {
     }
 
     private record CustomerSeed(
+            String userEmail,
             String firstName,
             String lastName,
             String email,
