@@ -32,22 +32,22 @@ public class CustomerSeeder implements ApplicationRunner {
     }
 
     private void seedCustomer(CustomerSeed seed) {
+
         User user = userRepository.findByEmail(seed.userEmail())
                 .orElseThrow(() -> new IllegalStateException("User not found: " + seed.userEmail()));
 
-        if (customerRepository.findByEmail(seed.email()).isPresent()) {
-            return;
-        }
+        Customer customer = customerRepository.findByEmail(seed.email())
+                .orElseGet(Customer::new);
 
-        customerRepository.save(Customer.builder()
-                .user(user)
-                .firstName(seed.firstName())
-                .lastName(seed.lastName())
-                .email(seed.email())
-                .phone(seed.phone())
-                .address(seed.address())
-                .notes(seed.notes())
-                .build());
+        customer.setUser(user);
+        customer.setFirstName(seed.firstName());
+        customer.setLastName(seed.lastName());
+        customer.setEmail(seed.email());
+        customer.setPhone(seed.phone());
+        customer.setAddress(seed.address());
+        customer.setNotes(seed.notes());
+
+        customerRepository.save(customer);
     }
 
     private List<CustomerSeed> customers() {

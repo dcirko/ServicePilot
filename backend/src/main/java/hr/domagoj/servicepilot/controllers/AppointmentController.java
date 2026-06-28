@@ -2,12 +2,14 @@ package hr.domagoj.servicepilot.controllers;
 
 import hr.domagoj.servicepilot.DTOs.AppointmentDTO;
 import hr.domagoj.servicepilot.services.implementations.AppointmentServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointments")
+@Tag(name = "Appointments")
 public class AppointmentController {
     private final AppointmentServiceImpl appointmentService;
 

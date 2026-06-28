@@ -2,12 +2,14 @@ package hr.domagoj.servicepilot.controllers;
 
 import hr.domagoj.servicepilot.DTOs.WorkOrderDTO;
 import hr.domagoj.servicepilot.services.implementations.WorkOrderServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/work-orders")
+@Tag(name = "Work Orders")
 public class WorkOrderController {
     private final WorkOrderServiceImpl workOrderService;
 

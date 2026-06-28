@@ -6,6 +6,7 @@ import hr.domagoj.servicepilot.DTOs.LoginRequest;
 import hr.domagoj.servicepilot.DTOs.RegisterRequest;
 import hr.domagoj.servicepilot.security.CustomUserPrincipal;
 import hr.domagoj.servicepilot.services.implementations.AuthServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -22,11 +23,21 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication")
 public class AuthController {
     private final AuthServiceImpl authService;
 
     public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
+    }
+
+    @GetMapping("/csrf")
+    public Map<String, String> csrf(CsrfToken csrfToken) {
+        return Map.of(
+                "headerName", csrfToken.getHeaderName(),
+                "parameterName", csrfToken.getParameterName(),
+                "token", csrfToken.getToken()
+        );
     }
 
     @PostMapping("/register")

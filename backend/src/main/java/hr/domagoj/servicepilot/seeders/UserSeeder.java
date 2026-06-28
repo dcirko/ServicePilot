@@ -71,6 +71,30 @@ public class UserSeeder implements ApplicationRunner {
                         RoleSeeder.SERVICE_ADVISOR
                 ),
                 new UserSeed(
+                        "Ivan",
+                        "Horvat",
+                        "ivan@gmail.com",
+                        "Customer123!",
+                        "+385911234001",
+                        RoleSeeder.CUSTOMER
+                ),
+                new UserSeed(
+                        "Ana",
+                        "Kovac",
+                        "ana@gmail.com",
+                        "Customer123!",
+                        "+385911234002",
+                        RoleSeeder.CUSTOMER
+                ),
+                new UserSeed(
+                        "Petar",
+                        "Maric",
+                        "petar@gmail.com",
+                        "Customer123!",
+                        "+385911234003",
+                        RoleSeeder.CUSTOMER
+                ),
+                new UserSeed(
                         "Marko",
                         "Horvat",
                         "marko.horvat@servicepilot.local",

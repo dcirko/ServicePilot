@@ -41,13 +41,10 @@ export class Login {
 
     this.isSubmitting.set(true);
 
-    console.log(this.loginForm.getRawValue());
-
     this.authService.login(this.loginForm.getRawValue())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          console.log('Login successful', response.user);
           this.router.navigate(['/home']);
         },
         error: (error) => {
@@ -72,7 +69,7 @@ export class Login {
   private resolveErrorMessage(error: unknown): string {
     if (error instanceof HttpErrorResponse) {
       if (error.status === 0) {
-        return 'Ne mogu se spojiti na ServicePilot. Pokusaj ponovno za nekoliko trenutaka.';
+        return 'Unable to login';
       }
 
       if (typeof error.error?.message === 'string') {
@@ -84,6 +81,6 @@ export class Login {
       }
     }
 
-    return 'Neispravan email ili lozinka.';
+    return 'Invalid email or password.';
   }
 }

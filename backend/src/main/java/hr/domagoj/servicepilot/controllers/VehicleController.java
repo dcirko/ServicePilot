@@ -2,12 +2,14 @@ package hr.domagoj.servicepilot.controllers;
 
 import hr.domagoj.servicepilot.DTOs.VehicleDTO;
 import hr.domagoj.servicepilot.services.implementations.VehicleServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/vehicles")
+@Tag(name = "Vehicles")
 public class VehicleController {
     private final VehicleServiceImpl vehicleService;
 

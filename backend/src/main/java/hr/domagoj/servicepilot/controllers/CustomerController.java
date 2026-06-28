@@ -2,12 +2,14 @@ package hr.domagoj.servicepilot.controllers;
 
 import hr.domagoj.servicepilot.DTOs.CustomerDTO;
 import hr.domagoj.servicepilot.services.implementations.CustomerServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
+@Tag(name = "Customers")
 public class CustomerController {
     private final CustomerServiceImpl customerService;
 
