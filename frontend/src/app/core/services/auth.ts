@@ -3,8 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { LoginRequest } from '../domain/auth/loginRequest';
 import { LoginResponse } from '../domain/auth/loginResponse';
-import { LoginUser } from '../domain/auth/loginUser';
 import { CsrfResponse } from '../domain/auth/csrfResponse';
+import { RegisterRequest } from '../domain/auth/registerRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,12 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.csrf().pipe(
       switchMap(() => this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials, this.httpOptions))
+    );
+  }
+
+  register(registerData: RegisterRequest): Observable<LoginResponse> {
+    return this.csrf().pipe(
+      switchMap(() => this.http.post<LoginResponse>(`${this.apiUrl}/register`, registerData, this.httpOptions))
     );
   }
 

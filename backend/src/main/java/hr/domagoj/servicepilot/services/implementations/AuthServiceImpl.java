@@ -1,14 +1,13 @@
 package hr.domagoj.servicepilot.services.implementations;
 
-import hr.domagoj.servicepilot.DTOs.AuthResponse;
-import hr.domagoj.servicepilot.DTOs.CurrentUserResponse;
-import hr.domagoj.servicepilot.DTOs.LoginRequest;
-import hr.domagoj.servicepilot.DTOs.RegisterRequest;
+import hr.domagoj.servicepilot.DTOs.*;
+import hr.domagoj.servicepilot.entities.Customer;
 import hr.domagoj.servicepilot.entities.Role;
 import hr.domagoj.servicepilot.entities.User;
 import hr.domagoj.servicepilot.exceptions.BadRequestException;
 import hr.domagoj.servicepilot.exceptions.ResourceNotFoundException;
 import hr.domagoj.servicepilot.exceptions.UnauthorizedException;
+import hr.domagoj.servicepilot.repos.CustomerRepository;
 import hr.domagoj.servicepilot.repos.RoleRepository;
 import hr.domagoj.servicepilot.repos.UserRepository;
 import hr.domagoj.servicepilot.security.CookieService;
@@ -31,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     private final CookieService cookieService;
+    private final CustomerRepository customerRepository;
 
     public AuthServiceImpl(
             UserRepository userRepository,
@@ -38,7 +38,8 @@ public class AuthServiceImpl implements AuthService {
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
             RefreshTokenService refreshTokenService,
-            CookieService cookieService
+            CookieService cookieService,
+            CustomerRepository customerRepository
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -46,12 +47,13 @@ public class AuthServiceImpl implements AuthService {
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
         this.cookieService = cookieService;
+        this.customerRepository = customerRepository;
     }
 
     @Override
     @Transactional
     public AuthResponse register(RegisterRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        if (userRepository.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email().trim().toLowerCase())) {
             throw new BadRequestException("Email is already registered");
         }
 
@@ -68,13 +70,22 @@ public class AuthServiceImpl implements AuthService {
                 .role(role)
                 .build());
 
+        Customer customer = new Customer();
+        customer.setEmail(request.email());
+        customer.setFirstName(request.firstName());
+        customer.setLastName(request.lastName());
+        customer.setPhone(request.phone());
+        customer.setUser(user);
+
+        customerRepository.save(customer);
+
         return issueAuthCookies(user, httpRequest, httpResponse);
     }
 
     @Override
     @Transactional
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByEmail(request.email().trim().toLowerCase())
                 .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
 
         if (!Boolean.TRUE.equals(user.getActive()) || !passwordMatches(request.password(), user.getPassword())) {
