@@ -1,0 +1,35 @@
+<header class="border-b border-slate-200 bg-white/95 px-4 py-3 shadow-[0_8px_24px_-22px_rgba(15,23,42,0.55)] backdrop-blur sm:px-6 lg:px-8" aria-label="Staff account toolbar">
+  <div class="mx-auto flex w-full max-w-360 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <button type="button" class="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-[#321847] transition hover:border-[#f15153] hover:bg-[#fff8f8] hover:text-[#f15153] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#321847]" (click)="sidebarToggle.emit()" [attr.aria-label]="sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'" [attr.aria-expanded]="!sidebarCollapsed()">
+      <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <div class="flex flex-wrap items-center justify-end gap-3">
+      <button type="button" class="relative grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-[#321847] transition hover:border-[#f15153] hover:bg-[#fff8f8] hover:text-[#f15153] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#321847]" aria-label="Notifications">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Zm-8 10h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="absolute right-2 top-2 size-2 rounded-full bg-[#f15153] ring-2 ring-white" aria-hidden="true"></span>
+      </button>
+
+      <div class="flex min-w-0 items-center gap-3">
+        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-[#321847] text-xs font-extrabold text-white" aria-hidden="true">DĆ</span>
+        <div class="min-w-0">
+          <p class="truncate text-sm font-extrabold text-[#321847]">Domagoj Čirko</p>
+          <span class="mt-0.5 inline-flex rounded-full bg-[#fff0f0] px-2 py-0.5 text-[0.6875rem] font-extrabold tracking-wide text-[#c93538]">ADMIN</span>
+        </div>
+      </div>
+
+      <div class="hidden h-8 w-px bg-slate-200 sm:block" aria-hidden="true"></div>
+
+      <button type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-[9px] border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#321847] transition hover:border-[#f15153] hover:bg-[#f15153] hover:text-white focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#321847]">
+        <svg class="size-4.5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10 17l5-5-5-5m5 5H3m10-9h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Logout
+      </button>
+    </div>
+  </div>
+</header>

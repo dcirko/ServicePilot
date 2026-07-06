@@ -1,18 +1,18 @@
 <main class="flex min-h-screen flex-col items-center bg-slate-50 px-5 pb-7 pt-8 font-sans text-slate-900 sm:pt-10" aria-labelledby="register-title">
   <header class="mb-8 flex flex-col items-center text-center">
-    <div class="grid size-15 place-items-center rounded-[18px] bg-linear-to-br from-[#5b35f5] to-indigo-600 shadow-[0_16px_30px_-18px_rgba(79,70,229,0.85)]" aria-hidden="true">
+    <div class="grid size-15 place-items-center rounded-[18px] bg-[#321847] shadow-[0_16px_30px_-18px_rgba(50,24,71,0.85)]" aria-hidden="true">
       <svg class="size-8 text-white" viewBox="0 0 24 24" fill="none" focusable="false">
         <path d="M14.7 6.3a4.6 4.6 0 0 0-5.8 5.8L4.5 16.5a2.1 2.1 0 1 0 3 3l4.4-4.4a4.6 4.6 0 0 0 5.8-5.8l-3 3-2.7-2.7 2.7-3.3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
-    <h1 class="mt-5 text-[clamp(2rem,5vw,2.4rem)] font-extrabold leading-none tracking-normal text-slate-900">ServicePilot</h1>
+    <h1 class="mt-5 text-[clamp(2rem,5vw,2.4rem)] font-extrabold leading-none tracking-normal text-[#321847]">ServicePilot</h1>
     <p class="mt-2 text-lg leading-relaxed text-slate-500">Auto Service Management</p>
   </header>
 
   <section class="w-full max-w-160 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-28px_rgba(15,23,42,0.28),0_8px_22px_-18px_rgba(15,23,42,0.2)]" aria-label="Customer registration form">
     <div class="p-6 sm:p-8">
       <div class="mb-7">
-        <h2 id="register-title" class="text-2xl font-bold leading-tight tracking-normal text-slate-900">Create customer account</h2>
+        <h2 id="register-title" class="text-2xl font-bold leading-tight tracking-normal text-[#321847]">Create customer account</h2>
         <p class="mt-2 text-base leading-relaxed text-slate-500">Enter your details to create your ServicePilot account.</p>
       </div>
 
@@ -20,7 +20,7 @@
         <div class="grid gap-5 sm:grid-cols-2">
           <div class="grid gap-2">
             <label for="firstName" class="text-sm font-bold leading-snug text-slate-800">First name</label>
-            <input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="John" maxlength="100" formControlName="firstName" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:shadow-[0_0_0_4px_rgba(79,70,229,0.14),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showFirstNameError()" [attr.aria-invalid]="showFirstNameError()" aria-describedby="firstName-error" />
+            <input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="John" maxlength="100" formControlName="firstName" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f15153] focus:shadow-[0_0_0_4px_rgba(241,81,83,0.16),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showFirstNameError()" [attr.aria-invalid]="showFirstNameError()" aria-describedby="firstName-error" />
             @if (showFirstNameError()) {
               <p id="firstName-error" class="text-sm font-medium text-red-600">
                 @if (firstName.hasError('required')) {
@@ -34,7 +34,7 @@
 
           <div class="grid gap-2">
             <label for="lastName" class="text-sm font-bold leading-snug text-slate-800">Last name</label>
-            <input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Smith" maxlength="100" formControlName="lastName" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:shadow-[0_0_0_4px_rgba(79,70,229,0.14),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showLastNameError()" [attr.aria-invalid]="showLastNameError()" aria-describedby="lastName-error" />
+            <input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Smith" maxlength="100" formControlName="lastName" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f15153] focus:shadow-[0_0_0_4px_rgba(241,81,83,0.16),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showLastNameError()" [attr.aria-invalid]="showLastNameError()" aria-describedby="lastName-error" />
             @if (showLastNameError()) {
               <p id="lastName-error" class="text-sm font-medium text-red-600">
                 @if (lastName.hasError('required')) {
@@ -49,7 +49,7 @@
 
         <div class="grid gap-2">
           <label for="email" class="text-sm font-bold leading-snug text-slate-800">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" maxlength="150" formControlName="email" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:shadow-[0_0_0_4px_rgba(79,70,229,0.14),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showEmailError()" [attr.aria-invalid]="showEmailError()" aria-describedby="email-error" />
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" maxlength="150" formControlName="email" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f15153] focus:shadow-[0_0_0_4px_rgba(241,81,83,0.16),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showEmailError()" [attr.aria-invalid]="showEmailError()" aria-describedby="email-error" />
           @if (showEmailError()) {
             <p id="email-error" class="text-sm font-medium text-red-600">
               @if (email.hasError('required')) {
@@ -68,7 +68,7 @@
             <label for="phone" class="text-sm font-bold leading-snug text-slate-800">Phone number</label>
             <span class="text-sm text-slate-400">Optional</span>
           </div>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+385 91 234 5678" maxlength="30" formControlName="phone" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:shadow-[0_0_0_4px_rgba(79,70,229,0.14),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showPhoneError()" [attr.aria-invalid]="showPhoneError()" aria-describedby="phone-error" />
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+385 91 234 5678" maxlength="30" formControlName="phone" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f15153] focus:shadow-[0_0_0_4px_rgba(241,81,83,0.16),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showPhoneError()" [attr.aria-invalid]="showPhoneError()" aria-describedby="phone-error" />
           @if (showPhoneError()) {
             <p id="phone-error" class="text-sm font-medium text-red-600">Phone number cannot exceed 30 characters.</p>
           }
@@ -76,7 +76,7 @@
 
         <div class="grid gap-2">
           <label for="password" class="text-sm font-bold leading-snug text-slate-800">Password</label>
-          <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Minimum 8 characters" maxlength="100" formControlName="password" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-600 focus:shadow-[0_0_0_4px_rgba(79,70,229,0.14),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showPasswordError()" [attr.aria-invalid]="showPasswordError()" aria-describedby="password-error" />
+          <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Minimum 8 characters" maxlength="100" formControlName="password" class="h-13 w-full rounded-[9px] border border-slate-300 bg-white px-4 text-base text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#f15153] focus:shadow-[0_0_0_4px_rgba(241,81,83,0.16),0_1px_2px_rgba(15,23,42,0.08)]" [class.border-red-400]="showPasswordError()" [attr.aria-invalid]="showPasswordError()" aria-describedby="password-error" />
           @if (showPasswordError()) {
             <p id="password-error" class="text-sm font-medium text-red-600">
               @if (password.hasError('required')) {
@@ -94,12 +94,12 @@
           <p class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700" role="alert">{{ errorMessage() }}</p>
         }
 
-        <button class="mt-2 h-13 w-full rounded-[9px] border-0 bg-linear-to-br from-[#5b35f5] to-indigo-600 text-base font-extrabold text-white shadow-[0_10px_18px_-12px_rgba(79,70,229,0.9)] transition hover:brightness-105 hover:shadow-[0_14px_24px_-14px_rgba(79,70,229,0.95)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[3px] focus-visible:outline-indigo-200 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-70" type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Creating account...' : 'Create account' }}</button>
+        <button class="mt-2 h-13 w-full rounded-[9px] border-0 bg-[#f15153] text-base font-extrabold text-white shadow-[0_10px_18px_-12px_rgba(241,81,83,0.9)] transition hover:bg-[#d94346] hover:shadow-[0_14px_24px_-14px_rgba(241,81,83,0.95)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[3px] focus-visible:outline-[#321847] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-70" type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Creating account...' : 'Create account' }}</button>
       </form>
     </div>
 
     <footer class="border-t border-slate-200 bg-[#fbfdff] px-6 py-6 text-center sm:px-8">
-      <p class="text-base leading-relaxed text-slate-700">Already have an account? <a routerLink="/login" class="font-bold text-indigo-600 no-underline hover:text-indigo-700 hover:underline hover:underline-offset-4">Sign in</a></p>
+      <p class="text-base leading-relaxed text-slate-700">Already have an account? <a routerLink="/login" class="font-bold text-[#321847] no-underline hover:text-[#f15153] hover:underline hover:underline-offset-4">Sign in</a></p>
       <p class="mx-auto mt-4 max-w-107.5 text-sm leading-relaxed text-slate-500">Public registration is available for customers only.</p>
     </footer>
   </section>

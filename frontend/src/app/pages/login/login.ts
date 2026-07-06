@@ -45,7 +45,7 @@ export class Login {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Login failed', error);
