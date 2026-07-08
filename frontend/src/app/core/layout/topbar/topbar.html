@@ -15,16 +15,16 @@
       </button>
 
       <div class="flex min-w-0 items-center gap-3">
-        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-[#321847] text-xs font-extrabold text-white" aria-hidden="true">DĆ</span>
+        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-[#321847] text-xs font-extrabold text-white" aria-hidden="true">{{currentUser?.firstName?.charAt(0)}}{{currentUser?.lastName?.charAt(0)}}</span>
         <div class="min-w-0">
-          <p class="truncate text-sm font-extrabold text-[#321847]">Domagoj Čirko</p>
-          <span class="mt-0.5 inline-flex rounded-full bg-[#fff0f0] px-2 py-0.5 text-[0.6875rem] font-extrabold tracking-wide text-[#c93538]">ADMIN</span>
+          <p class="truncate text-sm font-extrabold text-[#321847]">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</p>
+          <span class="mt-0.5 inline-flex rounded-full bg-[#fff0f0] px-2 py-0.5 text-[0.6875rem] font-extrabold tracking-wide text-[#c93538]">{{ currentUser?.roles?.[0] }}</span>
         </div>
       </div>
 
       <div class="hidden h-8 w-px bg-slate-200 sm:block" aria-hidden="true"></div>
 
-      <button type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-[9px] border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#321847] transition hover:border-[#f15153] hover:bg-[#f15153] hover:text-white focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#321847]">
+      <button (click)="logout()" type="button" class="inline-flex h-10 items-center justify-center gap-2 rounded-[9px] border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#321847] transition hover:border-[#f15153] hover:bg-[#f15153] hover:text-white focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#321847]">
         <svg class="size-4.5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M10 17l5-5-5-5m5 5H3m10-9h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
         </svg>

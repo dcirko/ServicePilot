@@ -5,6 +5,7 @@ import { LoginRequest } from '../domain/auth/loginRequest';
 import { LoginResponse } from '../domain/auth/loginResponse';
 import { CsrfResponse } from '../domain/auth/csrfResponse';
 import { RegisterRequest } from '../domain/auth/registerRequest';
+import { CurrentUserResponse } from '../domain/auth/currentUserResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,18 @@ export class AuthService {
       switchMap(() => this.http.post<LoginResponse>(`${this.apiUrl}/register`, registerData, this.httpOptions))
     );
   }
+
+  logout(){
+    return this.csrf().pipe(
+      switchMap(() => this.http.post<void>(`${this.apiUrl}/logout`, {}, this.httpOptions))
+    );
+  }
+
+  me(): Observable<CurrentUserResponse>{
+    return this.csrf().pipe(
+      switchMap(() => this.http.get<CurrentUserResponse>(`${this.apiUrl}/me`, this.httpOptions))
+    );
+  }
+
 
 }
