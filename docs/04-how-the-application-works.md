@@ -2,27 +2,30 @@
 
 ## Current User Perspective
 
-The backend exposes JSON REST endpoints. Except for registration, login, refresh, and the whitelisted but missing CSRF endpoint, requests must be authenticated through cookies set by the auth endpoints.
+The backend exposes JSON REST endpoints. Except for public auth endpoints such as registration, login, refresh, logout, and CSRF token retrieval, requests must be authenticated through cookies set by the auth endpoints.
 
-The frontend currently does not implement user workflows. It is an Angular scaffold with empty routes, so all end-user flows below are backend-only or planned.
+The frontend currently implements the auth entry points and app shell: login, registration, dashboard routing, topbar current user, logout, XSRF configuration, and an auth interceptor. Most domain workflows below are still backend-only or planned.
 
 ## Registration and Login
 
-Status: implemented backend auth, planned frontend UI.
+Status: implemented backend auth and first frontend auth UI.
 
 Implemented:
 
 - `POST /api/auth/register` accepts `RegisterRequest`.
-- `AuthServiceImpl.register` checks duplicate email, loads the `CUSTOMER` role, creates a `User`, and issues auth cookies.
+- `AuthServiceImpl.register` checks duplicate email, loads the `CUSTOMER` role, creates a `User`, creates a linked `Customer` profile, and issues auth cookies.
 - `POST /api/auth/login` verifies email/password and active flag.
 - `POST /api/auth/refresh` rotates refresh tokens.
-- `POST /api/auth/logout` revokes refresh token and clears cookies.
+- `POST /api/auth/logout` revokes the refresh token if present and clears cookies. It is public with CSRF protection so expired access cookies do not block cleanup.
 - `GET /api/auth/me` returns `CurrentUserResponse`.
+- `GET /api/auth/csrf` returns the CSRF token metadata.
+- Angular has login/register forms, `AuthService`, XSRF configuration, and an auth interceptor for credentials and refresh/retry behavior.
 
 Important TODO:
 
-- Registration creates a `User` with role `CUSTOMER`, but does not create a linked `Customer` entity.
-- `/api/auth/csrf` is whitelisted in security but not implemented in `AuthController`.
+- Add auth guards and role-aware routing.
+- Add backend auth/security integration tests.
+- Add forgot-password flow if included in scope.
 
 ```mermaid
 sequenceDiagram
@@ -39,6 +42,7 @@ sequenceDiagram
     Service->>UserRepo: existsByEmail(email)
     Service->>RoleRepo: findByName("CUSTOMER")
     Service->>UserRepo: save(User)
+    Service->>Service: create linked Customer profile
     Service->>Token: create(user, ip)
     Service->>Cookie: set access + refresh cookies
     Service-->>UI: AuthResponse(CurrentUserResponse)
@@ -214,5 +218,5 @@ Missing:
 
 Status: planned.
 
-No dashboard controller, service, DTO, frontend route, or dashboard aggregation query was found.
+No dashboard controller, service, DTO, or dashboard aggregation query was found. A frontend dashboard route/page exists, but it is still a placeholder.
 

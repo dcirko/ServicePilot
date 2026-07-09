@@ -6,7 +6,8 @@ Roles are implemented in the database and exposed as Spring Security authorities
 
 Current endpoint access is not role-specific:
 
-- `/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`, and `/api/auth/csrf` are public in `SecurityConfig`.
+- `/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`, `/api/auth/logout`, and `/api/auth/csrf` are public in `SecurityConfig`.
+- `/api/auth/logout` is also skipped by `JwtAuthenticationFilter` so an expired access cookie cannot block refresh-token revocation and cookie clearing. CSRF protection still applies to the POST request.
 - All other endpoints require authentication.
 - `@EnableMethodSecurity` is enabled, but no `@PreAuthorize` rules were found.
 
@@ -14,7 +15,7 @@ Therefore, role permissions below are intended/planned permissions unless an end
 
 ## Important Registration Rule
 
-Public registration must create a `CUSTOMER` user by default. This is implemented in `AuthServiceImpl` through `DEFAULT_REGISTER_ROLE = "CUSTOMER"`.
+Public registration must create a `CUSTOMER` user by default. This is implemented in `AuthServiceImpl` through `DEFAULT_REGISTER_ROLE = "CUSTOMER"`, and registration also creates a linked `Customer` profile.
 
 Employees such as `ADMIN`, `SERVICE_ADVISOR`, and `MECHANIC` should be created by an `ADMIN`, not through public registration. This is planned because no admin user-management API exists yet.
 
@@ -31,8 +32,9 @@ Employees such as `ADMIN`, `SERVICE_ADVISOR`, and `MECHANIC` should be created b
 
 | Module | Recommended roles |
 | --- | --- |
-| Auth register/login/refresh | Public |
-| Auth me/logout | Any authenticated user |
+| Auth register/login/refresh/csrf | Public |
+| Auth logout | Public with CSRF protection; revokes refresh cookie if present |
+| Auth me | Any authenticated user |
 | Users/admin | `ADMIN` |
 | Customers CRUD | `ADMIN`, `SERVICE_ADVISOR`; `CUSTOMER` read/update own profile only |
 | Vehicles CRUD | `ADMIN`, `SERVICE_ADVISOR`; `CUSTOMER` own vehicles only |
@@ -48,7 +50,6 @@ Employees such as `ADMIN`, `SERVICE_ADVISOR`, and `MECHANIC` should be created b
 - No user-management controller for admin-created employees.
 - No role-specific method security.
 - No owner checks for customer-specific data.
-- No customer profile creation during registration.
 - No frontend route guards.
-- No CSRF endpoint despite whitelist.
+- No shared frontend session store for guards/topbar/future pages.
 

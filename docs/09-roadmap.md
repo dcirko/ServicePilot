@@ -7,7 +7,7 @@
 | Goal | Make the project consistent, buildable, and documented |
 | Main tasks | Confirm real tech versions, align README, keep this docs map updated |
 | Backend tasks | Add baseline tests for context load and key services; decide exception strategy for CRUD services |
-| Frontend tasks | Replace Angular placeholder with app shell and route structure |
+| Frontend tasks | Keep app shell/route structure aligned with docs; update generated tests for the custom shell |
 | Database tasks | Decide whether Hibernate update is temporary; start Flyway migrations |
 | Acceptance criteria | Backend compiles, docs match code, application can start with local PostgreSQL |
 
@@ -16,11 +16,11 @@
 | Item | Details |
 | --- | --- |
 | Goal | Complete secure login/session and role enforcement |
-| Main tasks | Add CSRF endpoint, role-based authorization, employee creation rules |
-| Backend tasks | Add `UserController` for admin-created employees; add `@PreAuthorize`; create customer profile on registration |
-| Frontend tasks | Login/register pages, auth service, route guards, current-user state |
+| Main tasks | Add route guards, role-based authorization, employee creation rules, and auth tests |
+| Backend tasks | Add `UserController` for admin-created employees; add `@PreAuthorize`; add auth/security integration tests |
+| Frontend tasks | Add route guards, shared session/current-user service, and role-aware navigation |
 | Database tasks | Add user/role migrations and indexes |
-| Acceptance criteria | Public registration creates only customer users; admin creates employees; protected endpoints reject unauthorized roles |
+| Acceptance criteria | Public registration creates only customer users and linked customer profiles; admin creates employees; protected endpoints reject unauthorized roles |
 
 ## Phase 3: Customers And Vehicles
 
@@ -90,5 +90,5 @@
 
 ## Recommended Next Implementation Step
 
-Implement Phase 2 foundations before adding more screens: finish CSRF/auth frontend plumbing, create admin user-management, create linked `Customer` profiles during registration, and enforce role-based access. Immediately after that, complete appointment create/update because it blocks the rest of the service workflow.
+Implement the remaining Phase 2 foundations before adding more domain screens: add frontend auth/role guards, promote current-user state into a shared session service, create admin user-management, enforce role-based access, and add auth/security tests. Immediately after that, complete appointment create/update because it blocks the rest of the service workflow.
 

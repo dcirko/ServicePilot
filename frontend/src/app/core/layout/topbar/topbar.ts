@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -18,12 +18,12 @@ export class Topbar {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  currentUser: CurrentUserResponse | null = null;
+  readonly currentUser = signal<CurrentUserResponse | null>(null);
 
   constructor() {
     this.authService.me().subscribe({
       next: (user) => {
-        this.currentUser = user;
+        this.currentUser.set(user);
         console.log('Current user:', user);
       },
       error: (error) => {

@@ -2,7 +2,7 @@
 
 ## What ServicePilot Is
 
-ServicePilot is a full-stack auto service management application for repair shops and service centers. The repository currently contains a Spring Boot backend and an Angular frontend scaffold.
+ServicePilot is a full-stack auto service management application for repair shops and service centers. The repository currently contains a Spring Boot backend and an Angular frontend shell with authentication screens.
 
 The application is intended to help a workshop manage customers, vehicles, appointments, mechanics, work orders, service catalog items, parts inventory, notifications, and eventually dashboards and documents.
 
@@ -25,7 +25,7 @@ Auto service workshops usually coordinate many related pieces of information: cu
 | --- | --- | --- |
 | Authentication | Implemented, with caveats | `AuthController`, `AuthServiceImpl`, `JwtService`, `RefreshTokenService`, `CookieService` |
 | Users and roles | Partial | `User`, `Role`, `RoleSeeder`, `UserSeeder`; no user management controller |
-| Customers | Partial | `Customer`, `CustomerController`, `CustomerServiceImpl`; API create does not set required `user` relation |
+| Customers | Partial | `Customer`, `CustomerController`, `CustomerServiceImpl`; registration creates a linked customer profile, but staff-facing API create does not set the required `user` relation |
 | Vehicles | Implemented backend CRUD | `Vehicle`, `VehicleController`, `VehicleServiceImpl` |
 | Mechanics | Partial | `Mechanic`, `MechanicController`, `MechanicServiceImpl`; list-only API |
 | Appointments | Partial | Entity and controller exist, but create/update return `null` in `AppointmentServiceImpl` |
@@ -33,9 +33,9 @@ Auto service workshops usually coordinate many related pieces of information: cu
 | Work order services/tasks | Entity/repository implemented, API planned | `WorkOrderService`, `WorkOrderServiceRepository`; no controller/service methods exposed |
 | Parts/inventory | Partial | Parts CRUD exists; inventory movement entity exists but no endpoint for stock movements |
 | Notifications | Partial | Notification entity and read/delete endpoints exist; mark-as-read is commented out |
-| Dashboard | Planned | Mentioned in `README.md`; no backend or frontend module found |
+| Dashboard | Planned/placeholder | Frontend dashboard route/page exists as a placeholder; no backend aggregation module found |
 | Documents/invoices | Planned | No invoice/document entity or controller found |
-| Frontend application | Planned/partial scaffold | Angular 21 project exists, but routes are empty and template is Angular default |
+| Frontend application | Partial shell | Angular 21 app shell, login/register pages, dashboard route, layout components, auth service, and auth interceptor exist; feature pages are still mostly planned |
 
 ## Current Implementation Snapshot
 
@@ -55,8 +55,12 @@ Implemented frontend foundations:
 
 - Angular application scaffold under `frontend`.
 - Main bootstrap in `frontend/src/main.ts`.
-- Empty route array in `frontend/src/app/app.routes.ts`.
-- Default generated Angular root component in `frontend/src/app/app.ts` and `frontend/src/app/app.html`.
+- Routes for login, register, home, and dashboard in `frontend/src/app/app.routes.ts`.
+- App shell in `frontend/src/app/app.ts` and `frontend/src/app/app.html`.
+- Login, register, home, and dashboard pages under `frontend/src/app/pages`.
+- Sidebar, topbar, and footer layout components under `frontend/src/app/core/layout`.
+- Auth API service and auth response/request types under `frontend/src/app/core`.
+- HTTP auth interceptor under `frontend/src/app/core/http`.
 
 ## Finished Application Target
 
@@ -79,17 +83,17 @@ When finished, ServicePilot should support:
 
 | Area | Implemented | Planned/TODO |
 | --- | --- | --- |
-| Auth | Register, login, refresh, logout, current user, refresh-token persistence | CSRF endpoint is whitelisted but not implemented; frontend auth flow missing |
+| Auth | Register, login, refresh, logout, current user, CSRF endpoint, refresh-token persistence, frontend auth forms/interceptor | Route guards, role-aware session state, auth tests, forgot-password flow |
 | Roles | Role table and seeded role names | Role-based endpoint restrictions and admin user management |
 | Customers | Entity, repository, DTO, CRUD controller/service | Fix/create flow to attach required `User`; customer portal |
 | Vehicles | Entity, repository, DTO, CRUD controller/service | Customer-scoped views and service history |
 | Appointments | Entity, DTO, list/read/delete endpoints | Create/update implementation, validation, calendar UI, appointment-to-work-order |
 | Work orders | Entity, DTO, CRUD controller/service | Status transition endpoints, line item APIs, mechanic workflow |
 | Inventory | Parts entity and CRUD | Stock movements, low-stock alerts, consumption from work orders |
-| Frontend | Angular shell | All real pages, services, guards, forms, state |
-| Database | JPA entities and Hibernate `ddl-auto=update` | Versioned Flyway migrations; `README.md` says Flyway, but `application.properties` disables it |
+| Frontend | Angular shell, login/register forms, dashboard route, layout, auth service/interceptor | Domain pages, feature API services, route guards, shared session state |
+| Database | JPA entities, Hibernate `ddl-auto=update`, Flyway enabled, initial migrations under `db/migration` | Decide whether to move fully to Flyway-managed schema changes |
 
 ## Current Project Status
 
-ServicePilot currently has a meaningful backend domain model and several REST modules, but it is not yet a complete workflow application. The strongest implemented areas are authentication, roles, vehicle CRUD, parts CRUD, and main work-order CRUD. The biggest gaps are frontend screens, role authorization, appointment creation/update, customer-user consistency, work-order line-item APIs, inventory movement APIs, and database migrations.
+ServicePilot currently has a meaningful backend domain model, several REST modules, and a first Angular auth shell, but it is not yet a complete workflow application. The strongest implemented areas are authentication, roles, vehicle CRUD, parts CRUD, and main work-order CRUD. The biggest gaps are domain frontend screens, route guards, role authorization, appointment creation/update, staff-created customer-user consistency, work-order line-item APIs, inventory movement APIs, and settling the Flyway-versus-Hibernate schema strategy.
 

@@ -1,6 +1,6 @@
 # API Map
 
-Security note: except for public auth endpoints, current API access is authenticated but not role-specific. Required roles below are recommended/intended unless marked public.
+Security note: except for public auth endpoints, current API access is authenticated but not role-specific. Required roles below are recommended/intended unless marked public. Mutating auth requests still use CSRF protection.
 
 ## Auth
 
@@ -9,9 +9,9 @@ Security note: except for public auth endpoints, current API access is authentic
 | `POST` | `/api/auth/register` | Register public customer user | Public | `RegisterRequest` | `AuthResponse` | Implemented |
 | `POST` | `/api/auth/login` | Login and issue cookies | Public | `LoginRequest` | `AuthResponse` | Implemented |
 | `POST` | `/api/auth/refresh` | Rotate refresh token and issue new cookies | Public via refresh cookie | Cookie | `AuthResponse` | Implemented |
-| `POST` | `/api/auth/logout` | Revoke refresh token and clear cookies | Authenticated | Cookie | No content | Implemented |
+| `POST` | `/api/auth/logout` | Revoke refresh token if present and clear cookies | Public with CSRF protection | Cookie | No content | Implemented |
 | `GET` | `/api/auth/me` | Return current user | Authenticated | None | `CurrentUserResponse` | Implemented |
-| `GET` | `/api/auth/csrf` | Return CSRF token | Public | None | TODO | Planned/TODO; whitelisted but no controller method |
+| `GET` | `/api/auth/csrf` | Return CSRF token metadata | Public | None | `{ headerName, parameterName, token }` | Implemented |
 
 ## Users
 

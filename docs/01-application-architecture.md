@@ -6,7 +6,7 @@ ServicePilot follows the intended flow:
 
 `Angular frontend -> REST API -> Spring Boot controllers -> Services -> Repositories -> PostgreSQL database`
 
-The backend is the main implemented layer. The frontend currently exists as an Angular scaffold, so frontend-to-backend integration is planned rather than implemented.
+The backend is the main implemented layer. The frontend now has an Angular auth shell with login/register pages and HTTP auth plumbing, while most domain workflows are still planned.
 
 ```mermaid
 flowchart LR
@@ -57,13 +57,17 @@ Current files:
 
 - `frontend/package.json`: Angular 21, TypeScript, Tailwind/PostCSS dependencies.
 - `frontend/src/main.ts`: bootstraps `App`.
-- `frontend/src/app/app.config.ts`: provides router with `routes`.
-- `frontend/src/app/app.routes.ts`: `routes` is currently an empty array.
+- `frontend/src/app/app.config.ts`: provides router, HTTP client, XSRF configuration, and auth interceptor.
+- `frontend/src/app/app.routes.ts`: routes login, register, home, and dashboard.
 - `frontend/src/app/app.ts`: root standalone component.
-- `frontend/src/app/app.html`: default Angular generated placeholder.
+- `frontend/src/app/app.html`: switches between auth pages and the app shell.
 - `frontend/src/styles.css`: default global style placeholder.
+- `frontend/src/app/pages`: login, register, home, and dashboard pages.
+- `frontend/src/app/core/layout`: sidebar, topbar, and footer shell components.
+- `frontend/src/app/core/services/auth.ts`: auth API service.
+- `frontend/src/app/core/http`: auth HTTP interceptor and refresh-session helper.
 
-Current frontend status is partial scaffold. No pages, API services, guards, forms, interceptors, or state management were found.
+Current frontend status is partial shell. Auth pages, reactive forms, an auth API service, layout components, current-user topbar state, and an auth interceptor exist. Domain API services, route guards, role-aware navigation, and most feature pages are still planned.
 
 ## Database Architecture
 
@@ -73,11 +77,11 @@ Implemented database approach:
 - Backend uses `spring.datasource.url=jdbc:postgresql://localhost:5432/servicepilot`.
 - JPA entities map to tables through annotations.
 - `spring.jpa.hibernate.ddl-auto=update` is enabled.
-- Flyway dependencies exist in `backend/pom.xml`, but `spring.flyway.enabled=false` in `application.properties`.
-- No `backend/src/main/resources/db/migration` directory or migration files were found.
+- Flyway dependencies exist in `backend/pom.xml`, and `spring.flyway.enabled=true` in `application.properties`.
+- Initial migration files exist under `backend/src/main/resources/db/migration`.
 - `backend/src/main/resources/db/ServicePilotDiagram.png` exists, but it is a diagram asset, not an executable migration.
 
-Important assumption: the current schema is generated/updated by Hibernate in development. Versioned schema management is planned.
+Important assumption: the current schema can still be generated/updated by Hibernate in development because `spring.jpa.hibernate.ddl-auto=update` remains enabled. The project should decide whether to keep that temporarily or move fully to Flyway-managed schema changes.
 
 ## Security/Auth Architecture
 
@@ -93,10 +97,11 @@ Implemented security files:
 
 Current authorization behavior:
 
-- Public endpoints: `/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`, `/api/auth/csrf`.
+- Public endpoints: `/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`, `/api/auth/logout`, `/api/auth/csrf`.
 - All other requests require authentication.
 - `@EnableMethodSecurity` is present, but no controller/service `@PreAuthorize` rules were found.
-- `/api/auth/csrf` is permitted in security, but no matching controller endpoint was found. Marked TODO.
+- `/api/auth/logout` is public so it can clear/revoke refresh cookies even when the access cookie is expired. CSRF protection still applies to the POST request.
+- `/api/auth/csrf` is implemented in `AuthController`.
 
 ## Layer Communication
 
@@ -128,7 +133,7 @@ sequenceDiagram
 | File | Purpose | Status |
 | --- | --- | --- |
 | `backend/pom.xml` | Spring Boot 3.3.5, Java 21, JPA, Security, Web, Validation, PostgreSQL, Flyway, Quartz | Implemented |
-| `backend/src/main/resources/application.properties` | Server, database, JPA, Flyway disabled, JWT/cookie/CORS settings | Implemented |
+| `backend/src/main/resources/application.properties` | Server, database, JPA, Flyway, JWT/cookie/CORS settings | Implemented |
 | `docker-compose.yml` | Local PostgreSQL 16 service | Implemented |
 | `frontend/package.json` | Angular 21 project scripts and dependencies | Implemented |
 | `frontend/angular.json` | Angular build/serve/test configuration | Implemented |

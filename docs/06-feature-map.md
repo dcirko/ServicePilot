@@ -2,9 +2,9 @@
 
 | Feature | Status | Priority | Backend work needed | Frontend work needed | Database work needed | Notes and risks |
 | --- | --- | --- | --- | --- | --- | --- |
-| Public registration | Implemented backend | MVP | Create linked `Customer` profile during/after registration | Registration form | Ensure `customers.user_id` consistency | Currently creates only `User` with `CUSTOMER` role |
-| Login/logout/refresh | Implemented backend | MVP | Add tests; resolve CSRF endpoint TODO | Login page, auth service, route guards | Refresh-token cleanup/index review | Cookie auth exists |
-| Current user session | Implemented backend | MVP | None beyond tests/roles | Header/session state | None | `GET /api/auth/me` exists |
+| Public registration | Implemented backend/frontend auth form | MVP | Add tests and validation polish | Registration form exists; add route guard redirects after login/register as needed | Ensure `customers.user_id` consistency | Creates `User` with `CUSTOMER` role and linked `Customer` profile |
+| Login/logout/refresh | Implemented backend/frontend auth plumbing | MVP | Add tests | Route guards and shared session state | Refresh-token cleanup/index review | Cookie auth, CSRF endpoint, frontend interceptor, and robust logout exist |
+| Current user session | Implemented backend/topbar display | MVP | None beyond tests/roles | Promote topbar-local signal to shared session service | None | `GET /api/auth/me` exists |
 | Role model | Implemented data, partial enforcement | MVP | Add `@PreAuthorize` policies | Guard routes by role | Seed roles already implemented | Current endpoints only require authentication |
 | Admin user management | Planned | MVP | `UserController`, employee create/update/deactivate | Admin users page | Possibly audit fields | Required because employees must not use public registration |
 | Customers CRUD | Partial | MVP | Fix create/update relation to `User`; validation | Customers list/detail/form | Index email/user_id | Current `CustomerDTO` lacks `userId` |
@@ -28,9 +28,9 @@
 ## Biggest Risks
 
 - Appointment create/update endpoints exist but return `null`.
-- Customer API create does not satisfy the required `Customer.user` relationship.
+- Staff-facing customer API create does not satisfy the required `Customer.user` relationship.
 - Authorization is authentication-only today.
 - Work order line items and inventory movements are modeled but not operational.
-- Flyway is listed as a dependency and mentioned in README, but migrations are disabled and absent.
-- Frontend is not a ServicePilot UI yet.
+- Flyway is enabled and migrations exist, but Hibernate `ddl-auto=update` is still enabled and can hide missing migrations.
+- Frontend has an auth shell, but most ServicePilot domain pages are still missing.
 

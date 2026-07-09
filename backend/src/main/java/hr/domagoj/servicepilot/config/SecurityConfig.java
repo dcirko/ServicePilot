@@ -59,8 +59,9 @@ public class SecurityConfig {
                                 "/api-docs",
                                 "/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/refresh", "/api/auth/csrf").permitAll()
-                        .requestMatchers("/api/appointments/{id}", "/api/auth/logout", "/api/auth/me").authenticated()
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/refresh", "/api/auth/logout"
+                                , "/api/auth/csrf").permitAll()
+                        .requestMatchers("/api/appointments/{id}", "/api/auth/me").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

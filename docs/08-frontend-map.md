@@ -7,30 +7,39 @@ Frontend root: `frontend`.
 | File/folder | Current purpose |
 | --- | --- |
 | `frontend/package.json` | Angular scripts and dependencies |
-| `frontend/angular.json` | Angular build, serve, and test configuration |
+| `frontend/angular.json` | Angular build, serve, test configuration, and `/api` proxy setup |
+| `frontend/proxy.conf.json` | Proxies `/api` to the Spring backend on `localhost:8080` during development |
 | `frontend/src/main.ts` | Bootstraps the standalone Angular app |
 | `frontend/src/index.html` | Hosts `<app-root>` |
-| `frontend/src/styles.css` | Global styles placeholder |
-| `frontend/src/app/app.ts` | Root standalone component named `App` |
-| `frontend/src/app/app.html` | Default Angular starter template |
-| `frontend/src/app/app.css` | Component stylesheet placeholder |
-| `frontend/src/app/app.routes.ts` | Empty `Routes` array |
-| `frontend/src/app/app.config.ts` | Provides router and browser error listeners |
-| `frontend/src/app/app.spec.ts` | Generated root component tests |
+| `frontend/src/styles.css` | Global styles |
+| `frontend/src/app/app.ts` | Root standalone component that controls shell visibility |
+| `frontend/src/app/app.html` | Shows auth pages without shell and app pages with sidebar/topbar/footer shell |
+| `frontend/src/app/app.routes.ts` | Routes login, register, home, and dashboard |
+| `frontend/src/app/app.config.ts` | Provides router, HTTP client, XSRF configuration, and auth interceptor |
+| `frontend/src/app/pages` | Login, register, home, and dashboard pages |
+| `frontend/src/app/core/layout` | Sidebar, topbar, and footer components |
+| `frontend/src/app/core/services/auth.ts` | Auth API service for CSRF, login, register, logout, and current user |
+| `frontend/src/app/core/http` | Auth interceptor, refresh-session helper, and HTTP context flags |
+| `frontend/src/app/core/domain/auth` | Auth request/response TypeScript types |
+| `frontend/src/app/app.spec.ts` | Generated test; currently needs updating for the custom app shell |
 
 ## Pages
 
-Status: planned.
+Status: partial.
 
-No ServicePilot-specific pages were found. The only visible template is the default Angular starter page.
+Implemented pages:
+
+| Page | Purpose | Status |
+| --- | --- | --- |
+| Login | Authenticate users | Implemented |
+| Register | Public customer registration | Implemented |
+| Home | Existing page route | Implemented shell/page, final purpose unclear |
+| Dashboard | Initial authenticated shell destination | Implemented placeholder |
 
 Planned pages:
 
 | Page | Purpose | Priority |
 | --- | --- | --- |
-| Login | Authenticate users | MVP |
-| Register | Public customer registration | MVP |
-| Dashboard | Operational summary | Important |
 | Customers | Customer list/detail/form | MVP |
 | Vehicles | Vehicle list/detail/form | MVP |
 | Appointments | Calendar/list/detail/form | MVP |
@@ -43,27 +52,38 @@ Planned pages:
 
 ## Components
 
-Status: planned.
-
-Suggested component groups:
+Implemented component groups:
 
 | Component group | Examples |
 | --- | --- |
-| Layout | App shell, sidebar, top bar, user menu |
-| Auth | Login form, register form, session status |
+| Layout | Sidebar, topbar, footer, app shell |
+| Auth | Login form, registration form |
+| Session display | Topbar current-user name, initials, role, logout action |
+
+Planned component groups:
+
+| Component group | Examples |
+| --- | --- |
 | Data tables | Customers table, vehicles table, work orders table, parts table |
 | Detail panels | Customer detail, vehicle detail, work-order detail |
 | Forms | Customer form, vehicle form, appointment form, part form |
 | Workflow controls | Work-order status control, assignment control, part usage form |
 | Feedback | Toasts, validation messages, loading/error states |
 
-## Services
+## Services And HTTP
 
-Status: planned.
+Implemented:
 
-No Angular API services were found. Planned services should mirror backend modules:
+- `AuthService` for CSRF, login, register, logout, and current user.
+- Angular XSRF configuration for `XSRF-TOKEN` / `X-XSRF-TOKEN`.
+- Auth interceptor for `/api` requests:
+  - adds `withCredentials`;
+  - refreshes the session on eligible `401` responses;
+  - retries the original request once;
+  - redirects to `/login` if refresh fails.
 
-- `AuthApiService`
+Planned services should mirror backend modules:
+
 - `CustomersApiService`
 - `VehiclesApiService`
 - `AppointmentsApiService`
@@ -73,22 +93,28 @@ No Angular API services were found. Planned services should mirror backend modul
 - `NotificationsApiService`
 - `DashboardApiService`
 
-Because backend auth uses HttpOnly cookies, Angular HTTP calls should use credentials and should handle CSRF once the CSRF endpoint is implemented.
+Because backend auth uses HttpOnly cookies, Angular should not store access tokens in local storage. API calls should rely on cookies, XSRF protection, and the shared interceptor.
 
 ## Routing
 
 Current routing:
 
 ```ts
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'home', component: Home },
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
+  { path: 'dashboard', component: Dashboard },
+];
 ```
 
 Planned route map:
 
 | Route | Page | Guard |
 | --- | --- | --- |
-| `/login` | Login | Public |
-| `/register` | Register | Public |
+| `/login` | Login | Public, redirect away when already authenticated |
+| `/register` | Register | Public, redirect away when already authenticated |
 | `/dashboard` | Dashboard | Authenticated |
 | `/customers` | Customers | Staff |
 | `/customers/:id` | Customer detail | Staff or owner |
@@ -102,13 +128,13 @@ Planned route map:
 
 ## Forms
 
-Status: planned.
+Implemented:
 
-`@angular/forms` is installed, but no domain forms exist. Reactive forms are expected based on README planning.
+- Login form.
+- Registration form.
 
 Needed forms:
 
-- Login and registration.
 - Customer create/update.
 - Vehicle create/update.
 - Appointment create/update.
@@ -120,12 +146,18 @@ Needed forms:
 
 ## State Management
 
-Status: not implemented.
+Status: partial.
 
-No state library or custom shared store was found. A conservative first implementation can use:
+Implemented:
 
-- Angular services with signals for auth/session state.
-- Router guards based on current user roles.
+- App shell visibility uses signals in the root component.
+- Sidebar collapse state uses signals.
+- Topbar current user uses a signal so `/me` responses render immediately.
+
+Needed next:
+
+- Shared session/current-user service for topbar, guards, and future role-aware navigation.
+- Router guards based on authenticated state and current user roles.
 - Component-local state for forms and tables.
 - Later adoption of a richer store only if screens become complex.
 
@@ -134,4 +166,3 @@ No state library or custom shared store was found. A conservative first implemen
 When finished, the first screen after login should be the operational dashboard, not a marketing page. Staff users should be able to move quickly between customers, vehicles, appointments, and work orders. Mechanics should land on assigned work. Customers should see only their own vehicles, appointment requests, work-order history, and notifications.
 
 The UI should be dense and practical: tables, filters, detail drawers/pages, clear status indicators, and fast actions for repeated service-desk workflows.
-
